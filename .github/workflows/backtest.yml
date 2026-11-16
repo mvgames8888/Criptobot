@@ -1,0 +1,21 @@
+name: MV Crypto Backtesting
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: python run.py --year 2024
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mv-crypto-results
+          path: results/
